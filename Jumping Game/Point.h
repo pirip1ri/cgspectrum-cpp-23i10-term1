@@ -8,7 +8,7 @@ struct Point // struct is a type of class that is set to public as default
 
 	Point()
 		:x(0)
-		, y(0)
+		,y(0)
 	{
 
 	}

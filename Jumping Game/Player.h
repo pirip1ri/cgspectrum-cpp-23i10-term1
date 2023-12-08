@@ -9,7 +9,7 @@ public:
 	Player();
 
 	bool HasKey();
-	bool HasKey(int colour);
+	bool HasKey(ActorColour colour);
 	void PickUpKey(Key* key);
 	void UseKey();
 	void DropKey();
@@ -30,6 +30,11 @@ public:
 	void DecrementLives()
 	{
 		m_lives--;
+	}
+
+	virtual ActorType GetType() override
+	{
+		return ActorType::Player;
 	}
 
 	virtual void Draw() override;

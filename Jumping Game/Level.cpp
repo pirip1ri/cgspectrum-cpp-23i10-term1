@@ -13,6 +13,12 @@
 using namespace std;
 
 constexpr char WAL = (char)219;
+constexpr char kTopRightBorder = (char)187;
+constexpr char kTopLeftBorder = (char)201;
+constexpr char kBottomRightBorder = (char)188;
+constexpr char kBottomLeftBorder = (char)200;
+constexpr char kHorizontalBorder = (char)205;
+constexpr char kVerticalBorder = (char)186;
 
 Level::Level()
 	: m_pLevelData(nullptr)
@@ -78,10 +84,12 @@ bool Level::Load(std::string levelName, int* playerX, int* playerY)
 void Level::Draw(int viewportLeft, int viewportTop, int viewportWidth, int viewportHeight)
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console, kRegularColour);
+	SetConsoleTextAttribute(console, (int)ActorColour::RegularColour);
 
+	DisplayTopBorder(m_width);
 	for (int y = viewportTop; y < viewportTop + viewportHeight; ++y) // y < viewportTop + viewportHeight is the same as saying viewportTop <= y < viewportHeight
 	{
+		DisplayLeftBorder();
 		for (int x = viewportLeft; x < viewportLeft + viewportWidth; ++x) // same with x
 		{
 			if (x >= 0 && x < m_width && y >= 0 && y < m_height) // so long as x and y are in the array
@@ -90,8 +98,10 @@ void Level::Draw(int viewportLeft, int viewportTop, int viewportWidth, int viewp
 				cout << m_pLevelData[indexToPrint]; // print out the array at that position
 			}
 		}
+		DisplayRightBorder();
 		cout << endl; // next line
 	}
+	DisplayBottomBorder(m_width);
 
 	COORD actorCursorPosition;
 
@@ -158,27 +168,27 @@ bool Level::ConvertLevel(int* playerX, int* playerY)
 				break;
 			case 'r':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Key(x, y, kRedColour));
+				m_pActors.push_back(new Key(x, y, ActorColour::RedColour));
 				break;
 			case 'g':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Key(x, y, kGreenColour));
+				m_pActors.push_back(new Key(x, y, ActorColour::GreenColour));
 				break;
 			case 'b':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Key(x, y, kBlueColour));
+				m_pActors.push_back(new Key(x, y, ActorColour::BlueColour));
 				break;
 			case 'R':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Door(x, y, kRedColour, kRedColourSolid));
+				m_pActors.push_back(new Door(x, y, ActorColour::RedColour, ActorColour::RedColourSolid));
 				break;
 			case 'G':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Door(x, y, kGreenColour, kGreenColourSolid));
+				m_pActors.push_back(new Door(x, y, ActorColour::GreenColour, ActorColour::GreenColourSolid));
 				break;
 			case 'B':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Door(x, y, kBlueColour, kBlueColourSolid));
+				m_pActors.push_back(new Door(x, y, ActorColour::BlueColour, ActorColour::BlueColourSolid));
 				break;
 			case 'X':
 				m_pLevelData[index] = ' ';
@@ -248,4 +258,32 @@ PlacableActor* Level::CheckForCollision(int x, int y)
 	}
 
 	return collidedActor;
+}
+
+void DisplayTopBorder(int width)
+{
+	cout << kTopLeftBorder;
+	for (int i = 0; i < width; i++)
+	{
+		cout << kHorizontalBorder;
+	}
+	cout << kTopRightBorder << endl;
+}
+
+void DisplayBottomBorder(int width)
+{
+	cout << kBottomLeftBorder;
+	for (int i = 0; i < width; i++)
+	{
+		cout << kHorizontalBorder;
+	}
+	cout << kBottomRightBorder << endl;
+}
+void DisplayLeftBorder()
+{
+	cout << kVerticalBorder;
+}
+void DisplayRightBorder()
+{
+	cout << kVerticalBorder << endl;
 }

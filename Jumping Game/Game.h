@@ -2,11 +2,11 @@
 #include "Player.h"
 #include "Level.h"
 #include "PlacableActor.h"
+#include "Bullet.h"
 #include <fstream>
 
 class Game
 {
-protected:
 	Player m_player;
 	Level m_level;
 	bool m_isGameOver;
@@ -14,6 +14,7 @@ protected:
 	bool m_FloorBelow;
 	bool m_Jumping;
 	bool m_floating;
+	Bullet m_bullet;
 
 public:
 	Game();
